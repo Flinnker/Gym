@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "9SMo6b3pze0=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\oleg-\\Desktop\\Gym_Web_DDD\\src\\Gym.Domain\\Gym.Domain.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\oleg-\\.nuget\\packages\\ardalis.smartenum\\8.0.0\\ardalis.smartenum.8.0.0.nupkg.sha512",
+    "C:\\Users\\oleg-\\.nuget\\packages\\erroror\\1.10.0\\erroror.1.10.0.nupkg.sha512",
+    "C:\\Users\\oleg-\\.nuget\\packages\\system.componentmodel.annotations\\5.0.0\\system.componentmodel.annotations.5.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

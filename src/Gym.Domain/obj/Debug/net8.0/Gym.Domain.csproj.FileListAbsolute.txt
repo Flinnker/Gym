@@ -1,0 +1,24 @@
+C:\Users\oleg-\Desktop\Gym_Web_DDD\src\Gym.Domain\bin\Debug\net8.0\Gym.Domain.deps.json
+C:\Users\oleg-\Desktop\Gym_Web_DDD\src\Gym.Domain\bin\Debug\net8.0\Gym.Domain.dll
+C:\Users\oleg-\Desktop\Gym_Web_DDD\src\Gym.Domain\bin\Debug\net8.0\Gym.Domain.pdb
+C:\Users\oleg-\Desktop\Gym_Web_DDD\src\Gym.Domain\obj\Debug\net8.0\Gym.Domain.csproj.AssemblyReference.cache
+C:\Users\oleg-\Desktop\Gym_Web_DDD\src\Gym.Domain\obj\Debug\net8.0\Gym.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\oleg-\Desktop\Gym_Web_DDD\src\Gym.Domain\obj\Debug\net8.0\Gym.Domain.AssemblyInfoInputs.cache
+C:\Users\oleg-\Desktop\Gym_Web_DDD\src\Gym.Domain\obj\Debug\net8.0\Gym.Domain.AssemblyInfo.cs
+C:\Users\oleg-\Desktop\Gym_Web_DDD\src\Gym.Domain\obj\Debug\net8.0\Gym.Domain.csproj.CoreCompileInputs.cache
+C:\Users\oleg-\Desktop\Gym_Web_DDD\src\Gym.Domain\obj\Debug\net8.0\Gym.Domain.dll
+C:\Users\oleg-\Desktop\Gym_Web_DDD\src\Gym.Domain\obj\Debug\net8.0\refint\Gym.Domain.dll
+C:\Users\oleg-\Desktop\Gym_Web_DDD\src\Gym.Domain\obj\Debug\net8.0\Gym.Domain.pdb
+C:\Users\oleg-\Desktop\Gym_Web_DDD\src\Gym.Domain\obj\Debug\net8.0\ref\Gym.Domain.dll
+C:\Users\oleg-\Desktop\Gym_Web_DDD — копия\src\Gym.Domain\bin\Debug\net8.0\Gym.Domain.deps.json
+C:\Users\oleg-\Desktop\Gym_Web_DDD — копия\src\Gym.Domain\bin\Debug\net8.0\Gym.Domain.dll
+C:\Users\oleg-\Desktop\Gym_Web_DDD — копия\src\Gym.Domain\bin\Debug\net8.0\Gym.Domain.pdb
+C:\Users\oleg-\Desktop\Gym_Web_DDD — копия\src\Gym.Domain\obj\Debug\net8.0\Gym.Domain.csproj.AssemblyReference.cache
+C:\Users\oleg-\Desktop\Gym_Web_DDD — копия\src\Gym.Domain\obj\Debug\net8.0\Gym.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\oleg-\Desktop\Gym_Web_DDD — копия\src\Gym.Domain\obj\Debug\net8.0\Gym.Domain.AssemblyInfoInputs.cache
+C:\Users\oleg-\Desktop\Gym_Web_DDD — копия\src\Gym.Domain\obj\Debug\net8.0\Gym.Domain.AssemblyInfo.cs
+C:\Users\oleg-\Desktop\Gym_Web_DDD — копия\src\Gym.Domain\obj\Debug\net8.0\Gym.Domain.csproj.CoreCompileInputs.cache
+C:\Users\oleg-\Desktop\Gym_Web_DDD — копия\src\Gym.Domain\obj\Debug\net8.0\Gym.Domain.dll
+C:\Users\oleg-\Desktop\Gym_Web_DDD — копия\src\Gym.Domain\obj\Debug\net8.0\refint\Gym.Domain.dll
+C:\Users\oleg-\Desktop\Gym_Web_DDD — копия\src\Gym.Domain\obj\Debug\net8.0\Gym.Domain.pdb
+C:\Users\oleg-\Desktop\Gym_Web_DDD — копия\src\Gym.Domain\obj\Debug\net8.0\ref\Gym.Domain.dll
