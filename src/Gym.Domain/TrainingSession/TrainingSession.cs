@@ -8,9 +8,6 @@ public class TrainingSession : Entity
     private List<Reservation> _reservations = [];
     private int _sessionSize;
 
-    private TimeOnly _startSessionTime;
-    private TimeOnly _endSessionTime;
-
     public TimeRange TimeRange { get; private set; }
     public DateOnly StartSessionDate { get; private set; }
     public Guid TrainerId { get; private set; }
@@ -18,15 +15,17 @@ public class TrainingSession : Entity
     public TrainingSession(
         Guid gymRoomId, 
         int sessionSize, 
-        Guid trainerId, 
+        Guid trainerId,
+        DateOnly startSessionDate,
+        TimeOnly startSessionTime,
+        TimeOnly endSessionTime,
         Guid? id = null) : base(id)
     {
         _gymRoomId = gymRoomId;
         _sessionSize = sessionSize;
         TrainerId = trainerId;
-        TimeRange = TimeRange.Create(
-            _startSessionTime, 
-            _endSessionTime);
+        StartSessionDate = startSessionDate;
+        TimeRange = new TimeRange(startSessionTime, endSessionTime);
     }
 
     public ErrorOr<Success> ReserveSpot(Guid participantId) 
@@ -36,7 +35,7 @@ public class TrainingSession : Entity
             return TrainingSessionErrors.NotHaveAvailableSpot;
         }
 
-        if (_reservations.Any(id => id.Equals(participantId)))
+        if (_reservations.Any(reservation => reservation.ParticipantId.Equals(participantId)))
         {
             return TrainingSessionErrors.UserAlreadyReserveSpot;
         }
@@ -48,7 +47,7 @@ public class TrainingSession : Entity
 
     public ErrorOr<Success> CancelReservation(Guid participantId, IDateTimeProvider dateTimeProvider)
     {
-        if (!_reservations.Any(id => id.Equals(participantId)))
+        if (!_reservations.Any(reservation => reservation.ParticipantId.Equals(participantId)))
         {
             return TrainingSessionErrors.UserAlreadyReserveSpot;
         }

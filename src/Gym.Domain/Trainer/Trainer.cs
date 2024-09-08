@@ -24,17 +24,31 @@ public class Trainer : Entity
             return TrainerErrors.TrainerAlreadyHaveThisSession;
         }
 
-        return Shedule.AddTrainingSessionAtShedule(startDate, timeRange);
+        var addTrainingSessionResult = Shedule.AddTrainingSessionAtShedule(startDate, timeRange);
+
+        if (addTrainingSessionResult == Result.Success) 
+        {
+            _trainingSessions.Add(addingSessionId);
+        }
+
+        return addTrainingSessionResult;
     }
 
-    public ErrorOr<Success> RemoveSessionAtShedule(Guid addingSessionId, DateOnly startDate, TimeRange timeRange)
+    public ErrorOr<Success> RemoveSessionAtShedule(Guid removingSessionId, DateOnly startDate, TimeRange timeRange)
     {
-        if (!_trainingSessions.Any(trainingSessionId => trainingSessionId == addingSessionId))
+        if (!_trainingSessions.Any(trainingSessionId => trainingSessionId == removingSessionId))
         {
             return TrainerErrors.TrainerAlreadyNotHaveThisSession;
         }
 
-        return Shedule.RemoveTrainingSessionFromShedule(startDate, timeRange);
+        var removeTrainingSessionResult = Shedule.RemoveTrainingSessionFromShedule(startDate, timeRange);
+
+        if (removeTrainingSessionResult == Result.Success)
+        {
+            _trainingSessions.RemoveAll(sessionId => sessionId.Equals(removingSessionId));
+        }
+
+        return removeTrainingSessionResult;
     }
 
     public bool GetTrainerIsFree(DateOnly startDate, TimeRange timeRange)

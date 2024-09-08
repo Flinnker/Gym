@@ -46,26 +46,31 @@ public class Subscription : Entity
     public int GetPrice() => _type.Price;
 
 
-    public ErrorOr<Success> AddGym(Gym gym)
+    public ErrorOr<Success> AddGym(Guid gymId)
     {
         if (_gymIds.Count >= GetMaxGyms()) 
         {
             return GymErrors.CannotHaveMoreGymsThanSubscritpionAllows;
         }
 
-        _gymIds.Add(gym.Id);
+        _gymIds.Add(gymId);
 
         return Result.Success;
     }
 
-    public ErrorOr<Success> RemoveGym(Gym gym)
+    public ErrorOr<Success> RemoveGym(Guid gymId)
     {
         if (!_gymIds.Any())
         {
             return GymErrors.SubscriptionNotHaveGyms;
         }
 
-        _gymIds.Remove(gym.Id);
+        if (!_gymIds.Contains(gymId))
+        {
+            return SubscriptionErrors.SubscriptionNotHaveThisGym;
+        }
+
+        _gymIds.RemoveAll(localGymId => localGymId.Equals(gymId));
 
         return Result.Success;
     }

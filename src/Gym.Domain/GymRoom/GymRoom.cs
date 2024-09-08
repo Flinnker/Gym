@@ -10,6 +10,8 @@ public class GymRoom : Entity
     private readonly Shedule _shedule;
     private int _totalSpotCount;
 
+    private int GetMaxDailySessions() => _subscriptionType.MaxDailySessionCount;
+
     public int AvailableSpotCount {
         get 
         {
@@ -23,50 +25,41 @@ public class GymRoom : Entity
         _shedule = shedule ?? new Shedule();
     }
 
-    public ErrorOr<Success> ReserveTrainingSession(DateOnly startDate, TimeRange timeRange)
+    public ErrorOr<Success> ReserveTimeInShedule(DateOnly startDate, TimeRange timeRange)
     {
-        if (_shedule.AddTrainingSessionAtShedule(startDate, timeRange) != Result.Success)
-        {
-            return ParticipantErrors.TrainingSessionOverlappingReservedSession;
-        }
-
-        return Result.Success;
+        return _shedule.AddTrainingSessionAtShedule(startDate, timeRange);
     }
 
-    public ErrorOr<Success> CancelTrainingSession(DateOnly startDate, TimeRange timeRange)
+    public ErrorOr<Success> UnreserveTimeInShedule(DateOnly startDate, TimeRange timeRange)
     {
-        var removeResult = _shedule.RemoveTrainingSessionFromShedule(startDate, timeRange);
-
-        if (removeResult != Result.Success)
-        {
-            return removeResult;
-        }
-
-        return Result.Success;
+        return _shedule.RemoveTrainingSessionFromShedule(startDate, timeRange);
     }
 
-    public int GetMaxDailySessions() => _subscriptionType.MaxDailySessionCount;
-
-    public ErrorOr<Success> AddTrainingSession(TrainingSession trainingSession)
+    public ErrorOr<Success> AddTrainingSession(Guid trainingSessionId)
     {
         if (_trainingSessionIds.Count >= GetMaxDailySessions())
         {
             return TrainingSessionErrors.CannotHaveMoreSessionsThanSubscritpionAllows;
         }
 
-        _trainingSessionIds.Add(trainingSession.Id);
+        _trainingSessionIds.Add(trainingSessionId);
 
         return Result.Success;
     }
 
-    public ErrorOr<Success> RemoveTrainingSession(TrainingSession trainingSession)
+    public ErrorOr<Success> RemoveTrainingSession(Guid trainingSessionId)
     {
         if (!_trainingSessionIds.Any())
         {
             return TrainingSessionErrors.SubscriptionNotHaveSessions;
         }
 
-        _trainingSessionIds.Remove(trainingSession.Id);
+        if (!_trainingSessionIds.Contains(trainingSessionId))
+        {
+            return GymRoomsErrors.trainingSessionAlreadyNotExist;
+        }
+
+        _trainingSessionIds.Remove(trainingSessionId);
 
         return Result.Success;
     }

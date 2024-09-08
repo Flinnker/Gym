@@ -35,13 +35,6 @@ public class Participant : Entity
 
     public ErrorOr<Success> CancelTrainingSession(DateOnly startDate, TimeRange timeRange) 
     {
-        var removeResult = _shedule.RemoveTrainingSessionFromShedule(startDate, timeRange);
-
-        if (removeResult != Result.Success) 
-        {
-            return removeResult;
-        }
-
-        return Result.Success;
+        return _shedule.RemoveTrainingSessionFromShedule(startDate, timeRange);
     }
 }

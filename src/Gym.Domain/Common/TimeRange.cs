@@ -1,36 +1,38 @@
-﻿namespace Gym.Domain;
+﻿using ErrorOr;
+
+namespace Gym.Domain;
 
 public record TimeRange
 {
     public TimeOnly StartTime { get; init; }
     public TimeOnly EndTime { get; init; }
 
-    private TimeRange(TimeOnly startTime, TimeOnly endTime) 
+    public TimeRange(TimeOnly startTime, TimeOnly endTime) 
     {
         StartTime = startTime;
         EndTime = endTime;
     }
 
-    public static TimeRange Create(TimeOnly startTime, TimeOnly endTime) 
+    public static ErrorOr<TimeRange> Create(TimeOnly startTime, TimeOnly endTime) 
     {
         if (startTime == default)
         {
-            throw new ArgumentException("Недопустимое значение времени начала сессии");
+            return TimeRangeErrors.NotAvailableSessionBeginTime;
         }
 
         if (endTime == default)
         {
-            throw new ArgumentException("Недопустимое значение времени завершения сессии");
+            return TimeRangeErrors.NotAvailableSessionEndTime;
         }
 
         if (startTime > endTime)
         {
-            throw new ArgumentException("Завершение не может быть раньше начала");
+            return TimeRangeErrors.EndCanNotBeEarlierThenBegin;
         }
 
         if (startTime == endTime)
         {
-            throw new ArgumentException("Длительность сессии не может быть 0 минут");
+            return TimeRangeErrors.DurationCanNotBeZeroMinutes;
         }
 
         return new TimeRange(startTime, endTime);
@@ -39,7 +41,7 @@ public record TimeRange
     public bool GetSessionAlreadyEnd(DateOnly startDate, IDateTimeProvider dateTimeProvider) 
     {
         return (startDate.ToDateTime(EndTime) - dateTimeProvider.UtcNow)
-            .TotalHours < 0;
+            .TotalHours <= 0;
     }
 
     public bool GetUserLateForCancel(DateOnly startDate, IDateTimeProvider dateTimeProvider)

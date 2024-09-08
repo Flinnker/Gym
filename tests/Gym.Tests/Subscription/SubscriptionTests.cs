@@ -1,4 +1,5 @@
 ﻿using ErrorOr;
+using FluentAssertions;
 using Gym.Domain;
 
 namespace Gym.Tests.Subscription;
@@ -6,34 +7,55 @@ namespace Gym.Tests.Subscription;
 public class SubscriptionTests
 {
     [Fact]
-    public void AddGym_WhenMoreThanSubscriptionAllows_ShouldFail()
+    public void AddGym_WhenMoreThanSubscriptionAllows_ShouldReturnErrorAboutSubscriptionCanNotAddNewGymBecauseCurrentGymCountBetterOrEqualMaxGymCount()
     {
         // Arrange
         var subscription = SubscriptionFactory.CreateSubscription(SubscriptionType.Base);
-
         var gyms = Enumerable.Range(0, subscription.GetMaxGyms() + 1)
             .Select(_ => Domain.Gym.CreateGym(SubscriptionType.Base))
             .ToList();
 
         // Act
-        var gymResults = new List<ErrorOr<Success>>();
-
-        foreach(var gym in gyms)
-        {
-            gymResults.Add(subscription.AddGym(gym));
-        }
+        var gymResults = gyms.Select(gym => subscription.AddGym(gym.Value.Id)).ToList();
 
         // Assert
-        var allButLastGumResults = gymResults.Take(..^1);
+        gymResults.Take(..^1).Should().AllSatisfy(allButLastGumResult => allButLastGumResult.Value.Should().Be(Result.Success));
+        gymResults.Last().FirstError.Should().Be(GymErrors.CannotHaveMoreGymsThanSubscritpionAllows);
+    }
 
-        foreach (var allButLastGumResult in allButLastGumResults)
-        {
-            Assert.Equal(allButLastGumResult, Result.Success);
-        }
+    [Fact]
+    public void RemoveGym_WhenRemoveNotExistGym_ShouldReturnErrorAboutGymNotExistOrGymCollectionIsEmpty()
+    {
+        // Arrange
+        var subscription = SubscriptionFactory.CreateSubscription(SubscriptionType.Base);
+        var gymId = Guid.NewGuid();
 
-        var lastResult = gymResults.Last();
+        // Act
+        var removeGymWhenGymCollectionIsEmptyResult = subscription.RemoveGym(gymId);
+        var addGymResult = subscription.AddGym(gymId);
+        var removeNotExistGymResult = subscription.RemoveGym(Guid.NewGuid());
 
-        Assert.Equal(lastResult.FirstError, GymErrors.CannotHaveMoreGymsThanSubscritpionAllows);
+        // Assert
+        removeGymWhenGymCollectionIsEmptyResult.FirstError.Should().Be(GymErrors.SubscriptionNotHaveGyms);
+        addGymResult.Value.Should().Be(Result.Success);
+        removeNotExistGymResult.FirstError.Should().Be(SubscriptionErrors.SubscriptionNotHaveThisGym);
+    }
 
+    [Fact]
+    public void GetGymCount_WhenMoreThanSubscriptionAllows_ShouldFail()
+    {
+        // Arrange
+        var subscription = SubscriptionFactory.CreateSubscription(SubscriptionType.Base);
+        var gyms = Enumerable.Range(0, subscription.GetMaxGyms())
+            .Select(_ => Domain.Gym.CreateGym(SubscriptionType.Base))
+            .ToList();
+        var addGymResults = gyms.Select(gym => subscription.AddGym(gym.Value.Id)).ToList();
+
+        // Act
+        var actualGymCount = subscription.GetGymCount();
+
+        // Assert
+        addGymResults.Should().AllSatisfy(addGymResult => addGymResult.Value.Should().Be(Result.Success));
+        actualGymCount.Should().Be(subscription.GetMaxGyms());
     }
 }

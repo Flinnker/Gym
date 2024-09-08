@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gym.Domain", "src\Gym.Domai
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{E8B9E348-5DE3-4BC0-ADEF-361C9BA5AFF5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gym.Tests", "tests\Gym.Tests\Gym.Tests.csproj", "{8EF32032-FF9D-4991-B752-04F23E241AD0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gym.Domain.Tests.Unit", "tests\Gym.Tests\Gym.Domain.Tests.Unit.csproj", "{8EF32032-FF9D-4991-B752-04F23E241AD0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

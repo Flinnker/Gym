@@ -8,18 +8,30 @@ public class Gym : Entity
     private readonly List<Guid> _trainers = [];
     private readonly SubscriptionType _subscriptionType;
 
-    public Gym(SubscriptionType subscriptionType, Guid? id = null) : base(id)
+    private int GetMaxRoomCount() => _subscriptionType.MaxGymRoomCount;
+
+    public Gym(SubscriptionType subscriptionType)
     {
         _subscriptionType = subscriptionType;
     }
 
-    public static Gym CreateGym(SubscriptionType subscriptionType) 
+    public static ErrorOr<Gym> CreateGym(SubscriptionType subscriptionType) 
     {
+        if (subscriptionType is null) 
+        {
+            return GymErrors.SubscriptionIsNull;
+        }
+
         return new Gym(subscriptionType);
     }
 
-    public ErrorOr<Success> AddTrainer(Guid trainerId) 
+    public ErrorOr<Success> AddTrainer(Guid trainerId)
     {
+        if (_trainers.Contains(trainerId)) 
+        {
+            return GymErrors.TrainerAlreadyExistInGym;
+        }
+
         _trainers.Add(trainerId);
 
         return Result.Success;
@@ -27,33 +39,46 @@ public class Gym : Entity
 
     public ErrorOr<Success> RemoveTrainer(Guid trainerId)
     {
-        _trainers.Remove(trainerId);
-
-        return Result.Success;
-    }
-
-    public int GetMaxRooms() => _subscriptionType.MaxGymRoomCount;
-
-    public ErrorOr<Success> AddGymRoom(GymRoom gymRoom)
-    {
-        if (_gymRoomIds.Count >= GetMaxRooms())
+        if (!_trainers.Contains(trainerId))
         {
-            return GymRoomsErrors.CannotHaveMoreGymRoomsThanSubscritpionAllows;
+            return GymErrors.TrainerAlreadyNotExistInGym;
         }
 
-        _gymRoomIds.Add(gymRoom.Id);
+        _trainers.RemoveAll(trainer => trainer.Equals(trainerId));
 
         return Result.Success;
     }
 
-    public ErrorOr<Success> RemoveGymRoom(GymRoom gymRoom)
+    public ErrorOr<Success> AddGymRoom(Guid gymRoomId)
+    {
+        if (_gymRoomIds.Count >= GetMaxRoomCount())
+        {
+            return GymErrors.CannotHaveMoreGymRoomsThanSubscritpionAllows;
+        }
+
+        if (_gymRoomIds.Contains(gymRoomId))
+        {
+            return GymErrors.RoomAlreadyContainsInGym;
+        }
+
+        _gymRoomIds.Add(gymRoomId);
+
+        return Result.Success;
+    }
+
+    public ErrorOr<Success> RemoveGymRoom(Guid roomId)
     {
         if (!_gymRoomIds.Any())
         {
-            return GymRoomsErrors.SubscriptionNotHaveGymRooms;
+            return GymErrors.SubscriptionNotHaveGymRooms;
         }
 
-        _gymRoomIds.Remove(gymRoom.Id);
+        if (!_gymRoomIds.Contains(roomId))
+        {
+            return GymErrors.RoomAlreadyNotExistInGym;
+        }
+
+        _gymRoomIds.RemoveAll(gymRoomId => gymRoomId.Equals(roomId));
 
         return Result.Success;
     }
